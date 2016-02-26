@@ -1,4 +1,4 @@
-# OCSP-OCSP-Count-Server-Percentage
+# OCSP: OCSP Count Server Percentage
 OCSP: OCSP Count Server Percentage
 
 This is a tool that is run against a list of domain names, like for example the
