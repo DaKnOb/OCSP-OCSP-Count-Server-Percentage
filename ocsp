@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Script Variables
+OPENSSL_LOCATION="/usr/local/Cellar/openssl/1.0.2f/bin/openssl"
+OUTPUT_FILE="output.txt"
+
+# Script Code
+echo "Running with executable at: $OPENSSL_LOCATION"
+
+printf "" > $OUTPUT_FILE
+
+echo "Saving all certificates to $OUTPUT_FILE"
+
+CERTS=0
+
+echo "Starting processes for every certificate..."
+head -n $1 $2 > .tmp.domains
+while read domain; do
+	echo $domain >> $OUTPUT_FILE
+	$OPENSSL_LOCATION s_client -connect $domain:443 -showcerts -servername $domain -status < /dev/null >> $OUTPUT_FILE 2> /dev/null &
+	echo "Running for: $domain"
+	let CERTS=$CERTS+1
+done < .tmp.domains
+
+echo "Checking progress..."
+
+TMP=$(ps | grep openssl | wc -l)
+
+while [ $TMP -gt 1 ]; do
+	echo "Not finished. There are still $[$TMP-1] queries running..."
+	sleep 1
+	TMP=$(ps | grep openssl | wc -l)
+done
+
+OCSP_STAPLING=$(cat $OUTPUT_FILE | grep "OCSP Response Data" | wc -l)
+OCSP_NOSTAPLING=$(cat $OUTPUT_FILE | grep "no response sent" | wc -l)
+TOTAL_OCSP=$[$OCSP_STAPLING+$OCSP_NOSTAPLING]
+
+echo "+ - - - - - - +"
+echo "| Statistics  |"
+echo "+ - - - - - - +"
+
+printf "Total Domains Processed:\t\t\t$CERTS\n"
+printf "Total Domains with OCSP Stapling:\t $OCSP_STAPLING\n"
+printf "Total Domains without OCSP Stapling:\t $OCSP_NOSTAPLING\n"
+printf "Total Domains with OCSP:\t\t\t$TOTAL_OCSP\n"
