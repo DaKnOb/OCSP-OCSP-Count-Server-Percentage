@@ -12,14 +12,18 @@ printf "" > $OUTPUT_FILE
 echo "Saving all certificates to $OUTPUT_FILE"
 
 CERTS=0
+TEMP_FILE=$(head -c 1024 /dev/urandom | md5 | head -c 6)
+TEMP_FILE=".tmp.$TEMP_FILE"
 
 echo "Starting processes for every certificate..."
-head -n $1 $2 > .tmp.domains
+head -n $1 $2 > $TEMP_FILE
 while read domain; do
 	$OPENSSL_LOCATION s_client -connect $domain:443 -showcerts -servername $domain -status < /dev/null >> $OUTPUT_FILE 2> /dev/null &
 	echo "Running for: $domain"
 	let CERTS=$CERTS+1
-done < .tmp.domains
+done < $TEMP_FILE
+
+rm -fR $TEMP_FILE
 
 echo "Checking progress..."
 
