@@ -5,7 +5,7 @@ This is a tool that is run against a list of domain names, like for example the
 Alexa Top 1,000,000 and extracts some statistics regarding the usage of OCSP and
 OCSP Stapling.
 
-## Usage:
+## Usage
 
 ```bash
 ./ocsp <amount> <file>
