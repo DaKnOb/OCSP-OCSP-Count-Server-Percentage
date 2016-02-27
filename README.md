@@ -13,6 +13,20 @@ OCSP Stapling.
 # File: A file with one domain name per line and no other content
 ```
 
+## Example Output
+
+```
++ - - - - - - +
+| Statistics  |
++ - - - - - - +
+Total Domains Processed:                                   10
+Total Domains with OCSP Stapling:                          3
+Total Domains without OCSP Stapling:                       6
+Total Domains with OCSP:                                   9
+Total Domains with correct OCSP Stapling:                  3
+Total Domains with HTTPS:                                  9
+```
+
 ## Security Considerations
 
 This is a `bash(1)` script that is reading a file and then running shell commands
