@@ -20,7 +20,7 @@ else
 fi
 TEMP_FILE=".tmp.$TEMP_FILE"
 
-echo "Starting processes for every certificate..."
+echo "Starting processes for every domain..."
 head -n $1 $2 > $TEMP_FILE
 while read domain; do
 	$OPENSSL_LOCATION s_client -connect $domain:443 -showcerts -servername $domain -status < /dev/null >> $OUTPUT_FILE 2> /dev/null &
