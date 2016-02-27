@@ -41,13 +41,15 @@ OCSP_STAPLING=$(cat $OUTPUT_FILE | grep "OCSP Response Data" | wc -l)
 OCSP_NOSTAPLING=$(cat $OUTPUT_FILE | grep "no response sent" | wc -l)
 TOTAL_OCSP=$[$OCSP_STAPLING+$OCSP_NOSTAPLING]
 HTTPS_CONNS=$(cat $OUTPUT_FILE | grep "SSL handshake" | wc -l)
+OCSP_SUCCESS=$(cat $OUTPUT_FILE | grep "OCSP Response Status: successful" | wc -l)
 
 echo "+ - - - - - - +"
 echo "| Statistics  |"
 echo "+ - - - - - - +"
 
-printf "Total Domains Processed:\t\t\t$CERTS\n"
-printf "Total Domains with OCSP Stapling:\t $OCSP_STAPLING\n"
-printf "Total Domains without OCSP Stapling:\t $OCSP_NOSTAPLING\n"
-printf "Total Domains with OCSP:\t\t\t$TOTAL_OCSP\n"
-printf "Total Domains with HTTPS:\t\t $HTTPS_CONNS\n"
+printf "Total Domains Processed:                            $CERTS\n"
+printf "Total Domains with OCSP Stapling:                   $OCSP_STAPLING\n"
+printf "Total Domains without OCSP Stapling:                $OCSP_NOSTAPLING\n"
+printf "Total Domains with OCSP:                            $TOTAL_OCSP\n"
+printf "Total Domains with correct OCSP Stapling:           $OCSP_SUCCESS\n"
+printf "Total Domains with HTTPS:                           $HTTPS_CONNS\n"
