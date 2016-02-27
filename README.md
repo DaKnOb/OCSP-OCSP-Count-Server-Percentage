@@ -45,10 +45,6 @@ The current script will work only on Mac OS X where OpenSSL was manually install
 with `brew(1)` and more specifically version `1.0.2f`. Any recent version of OpenSSL will
 work but no others have been tested.
 
-In addition to that, there is a limitation on non-Mac OS X computers, which allows only
-a single run of this tool at a time, per folder. This has to do with a hack for a temporary
-file created. It will likely be fixed in a future version.
-
 ## Script Configuration
 
 There are several variables in the `ocsp` bash script. You can tweak them in order to change

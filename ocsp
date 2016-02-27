@@ -13,7 +13,11 @@ printf "" > $OUTPUT_FILE
 echo "Saving all certificates to $OUTPUT_FILE"
 
 CERTS=0
-TEMP_FILE=$(head -c 1024 /dev/urandom | md5 | head -c 6)
+if command -v md5 >/dev/null 2>/dev/null; then
+	TEMP_FILE=$(head -c 1024 /dev/urandom | md5 | head -c 6)
+else
+	TEMP_FILE=$(head -c 1024 /dev/urandom | md5sum | head -c 6)
+fi
 TEMP_FILE=".tmp.$TEMP_FILE"
 
 echo "Starting processes for every certificate..."
