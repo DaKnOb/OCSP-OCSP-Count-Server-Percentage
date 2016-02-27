@@ -1,0 +1,14 @@
+# Vim
+*.swp
+
+# OS X
+*.DS_Store
+
+# Temporary Files
+.tmp.*
+
+# Domain Name File
+domains.txt
+
+# Output File
+output.txt
