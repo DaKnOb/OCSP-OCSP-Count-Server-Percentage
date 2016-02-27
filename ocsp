@@ -3,6 +3,7 @@
 # Script Variables
 OPENSSL_LOCATION="/usr/local/Cellar/openssl/1.0.2f/bin/openssl"
 OUTPUT_FILE="output.txt"
+SLEEP_TIME="0.1"
 
 # Script Code
 echo "Running with executable at: $OPENSSL_LOCATION"
@@ -21,6 +22,7 @@ while read domain; do
 	$OPENSSL_LOCATION s_client -connect $domain:443 -showcerts -servername $domain -status < /dev/null >> $OUTPUT_FILE 2> /dev/null &
 	echo "Running for: $domain"
 	let CERTS=$CERTS+1
+	sleep $SLEEP_TIME
 done < $TEMP_FILE
 
 rm -fR $TEMP_FILE

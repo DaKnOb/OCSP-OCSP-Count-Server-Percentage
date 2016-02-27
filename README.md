@@ -34,3 +34,28 @@ work but no others have been tested.
 In addition to that, there is a limitation on non-Mac OS X computers, which allows only
 a single run of this tool at a time, per folder. This has to do with a hack for a temporary
 file created. It will likely be fixed in a future version.
+
+## Script Configuration
+
+There are several variables in the `ocsp` bash script. You can tweak them in order to change
+the behavior of the script. Here is some explanation on what they do:
+
+### OPENSSL_LOCATION
+The variable `OPENSSL_LOCATION` is used to determine the location of the `openssl(1)`
+executable. This can be a full path or a relative path, or simply if you have the desired
+version in your `$PATH` "openssl". Please note that the executable *MUST* be called or contain
+`openssl` in its name or be a wrapper that finally calls a binary named `openssl`.
+
+### OUTPUT_FILE
+The variable `OUTPUT_FILE` must contain a file in a location in your system where both are
+Readable and Writeable by the current user. The contents of this file will be *deleted* and
+replaced with new data. The data stored in this file is all the SSL/TLS Connection data obtained
+via OpenSSL. This includes OCSP Response Data, Certificates, as well as other information.
+Please note that this file *cannot* be `/dev/null` or a similar file/device since it is then
+read by the script. If you do not want this file stored, you can use `/tmp`.
+
+### SLEEP_TIME
+The variable `SLEEP_TIME` contains the amount in seconds between the processing of each
+domain name in the list. Domains are processed in parallel but in order to avoid problems
+with local system resources or the network you can configure the rate at which a parallel
+processor starts.
