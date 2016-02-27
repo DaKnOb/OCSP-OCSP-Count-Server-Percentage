@@ -16,7 +16,6 @@ CERTS=0
 echo "Starting processes for every certificate..."
 head -n $1 $2 > .tmp.domains
 while read domain; do
-	echo $domain >> $OUTPUT_FILE
 	$OPENSSL_LOCATION s_client -connect $domain:443 -showcerts -servername $domain -status < /dev/null >> $OUTPUT_FILE 2> /dev/null &
 	echo "Running for: $domain"
 	let CERTS=$CERTS+1
@@ -35,6 +34,7 @@ done
 OCSP_STAPLING=$(cat $OUTPUT_FILE | grep "OCSP Response Data" | wc -l)
 OCSP_NOSTAPLING=$(cat $OUTPUT_FILE | grep "no response sent" | wc -l)
 TOTAL_OCSP=$[$OCSP_STAPLING+$OCSP_NOSTAPLING]
+HTTPS_CONNS=$(cat $OUTPUT_FILE | grep "SSL handshake" | wc -l)
 
 echo "+ - - - - - - +"
 echo "| Statistics  |"
@@ -44,3 +44,4 @@ printf "Total Domains Processed:\t\t\t$CERTS\n"
 printf "Total Domains with OCSP Stapling:\t $OCSP_STAPLING\n"
 printf "Total Domains without OCSP Stapling:\t $OCSP_NOSTAPLING\n"
 printf "Total Domains with OCSP:\t\t\t$TOTAL_OCSP\n"
+printf "Total Domains with HTTPS:\t\t $HTTPS_CONNS\n"
